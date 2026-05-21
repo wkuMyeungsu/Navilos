@@ -2,6 +2,8 @@
 #include "HalUart.h"
 #include "stdio.h"
 
+static char printf_buf[PRINTF_BUF_LEN];
+
 uint32_t putstr(const char* s)
 {
 	uint32_t c = 0;
@@ -11,16 +13,6 @@ uint32_t putstr(const char* s)
 		c++;
 	}
 	return c;
-}
-
-uint32_t debug_printf(const char* format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	vsprintf(printf_buf, format, args);
-	va_end(args);
-
-	return putstr(printf_buf);
 }
 
 uint32_t vsprintf(char* buf, const char* format, va_list arg)
@@ -37,7 +29,7 @@ uint32_t vsprintf(char* buf, const char* format, va_list arg)
 		if (format[i] == '%')
 		{
 			i++;
-			switch(foramt[i])
+			switch(format[i])
 			{
 				case 'c':
 					ch = (char)va_arg(arg, int32_t);
@@ -47,7 +39,7 @@ uint32_t vsprintf(char* buf, const char* format, va_list arg)
 					str = (char*)va_arg(arg, char*);
 					if(str == NULL)
 					{
-						str = "(null)";
+					str = "(null)";
 					}
 					while(*str)
 					{
@@ -106,4 +98,14 @@ uint32_t utoa(char* buf, uint32_t val, utoa_t base)
 	}
 
 	return c;
+}
+
+uint32_t debug_printf(const char* format, ...)
+{
+	va_list args;
+	va_start(args, format);
+	vsprintf(printf_buf, format, args);
+	va_end(args);
+
+	return putstr(printf_buf);
 }

@@ -2,6 +2,13 @@
 #define LIB_STDIO_H_
 
 #include "stdarg.h"
+#include "stdint.h"
+
+#ifndef NULL
+#define NULL ((void*)0)
+#endif
+
+#define PRINTF_BUF_LEN 1024
 
 typedef enum utoa_t
 {
