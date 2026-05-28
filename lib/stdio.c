@@ -1,6 +1,7 @@
 #include "stdint.h"
 #include "HalUart.h"
 #include "stdio.h"
+#include "stddef.h"
 
 static char printf_buf[PRINTF_BUF_LEN];
 

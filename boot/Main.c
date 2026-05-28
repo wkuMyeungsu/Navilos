@@ -1,7 +1,10 @@
 #include "stdint.h"
 #include "HalUart.h"
-
 #include "stdio.h"
+#include "stdbool.h"
+#include "HalInterrupt.h"
+
+#define UART_POLLING_ECHO 0
 
 static void Hw_init(void);
 static void Printf_test(void);
@@ -21,16 +24,21 @@ void main(void)
 
 	Printf_test();
 
+	while(true);
+
+#if UART_POLLING_ECHO
 	i = 100;
 	while(i--)
 	{
 		uint8_t ch = Hal_uart_get_char();
 		Hal_uart_put_char(ch);
 	}
+#endif
 }
 
 static void Hw_init(void)
 {
+	Hal_interrupt_init();
 	Hal_uart_init();
 }
 

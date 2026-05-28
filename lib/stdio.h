@@ -3,10 +3,7 @@
 
 #include "stdarg.h"
 #include "stdint.h"
-
-#ifndef NULL
-#define NULL ((void*)0)
-#endif
+#include "stddef.h"
 
 #define PRINTF_BUF_LEN 1024
 
