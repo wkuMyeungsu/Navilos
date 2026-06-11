@@ -16,17 +16,20 @@ ASM_OBJS = $(patsubst boot/%.S, build/%.os, $(ASM_SRCS))
 
 VPATH = boot 		\
 	hal/$(TARGET)	\
-	lib
+	lib		\
+	kernel
 
 C_SRCS  = $(notdir $(wildcard boot/*.c))
 C_SRCS += $(notdir $(wildcard hal/$(TARGET)/*.c))
 C_SRCS += $(notdir $(wildcard lib/*.c))
+C_SRCS += $(notdir $(wildcard kernel/*.c))
 C_OBJS  = $(patsubst %.c, build/%.o, $(C_SRCS))
 
 INC_DIRS = -I include		\
 	   -I hal		\
 	   -I hal/$(TARGET)	\
-	   -I lib
+	   -I lib		\
+	   -I kernel
 
 CFLAGS = -c -g -std=c11
 
@@ -41,20 +44,20 @@ all: $(navilos)
 
 clean:
 	@rm -fr build
-	
+
 run: $(navilos)
 	qemu-system-arm -M realview-pb-a8 -kernel $(navilos) -nographic
-	
+
 debug: $(navilos)
 	qemu-system-arm -M realview-pb-a8 -kernel $(navilos) -S -gdb tcp::1234,ipv4 -nographic
-	
+
 gdb:
 	gdb-multiarch build/navilos.axf
 
 $(navilos): $(ASM_OBJS) $(C_OBJS) $(LINKER_SCRIPT)
 	$(LD) -n -T $(LINKER_SCRIPT) -o $(navilos) $(ASM_OBJS) $(C_OBJS) -Wl,-Map=$(MAP_FILE) $(LDFLAGS)
 	$(OC) -O binary $(navilos) $(navilos_bin)
-	
+
 build/%.os: %.S
 	mkdir -p $(shell dirname $@)
 	$(CC) -march=$(ARCH) -mcpu=$(MCPU) $(INC_DIRS) $(CFLAGS) -o $@ $<
