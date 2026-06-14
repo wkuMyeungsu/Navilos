@@ -18,11 +18,13 @@ typedef struct KernelTcb_t
 {
 	uint32_t sp;
 	uint8_t* stack_base;
+	uint32_t priority; 	// 우선순위 추가
 } KernelTcb_t;
 
 typedef void (*KernelTaskFunc_t)(void);
 
 void Kernel_task_init(void);
-uint32_t Kernel_task_create(KernelTaskFunc_t starFunc);
+uint32_t Kernel_task_create(KernelTaskFunc_t starFunc, uint32_t priority);
+
 
 #endif /* KERNEL_TASK_H_ */

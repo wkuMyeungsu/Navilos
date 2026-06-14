@@ -54,19 +54,19 @@ static void Kernel_init(void)
 
 	Kernel_task_init();
 
-	taskId = Kernel_task_create(User_task0);
+	taskId = Kernel_task_create(User_task0, 1);
 	if (NOT_ENOUGH_TASK_NUM == taskId)
 	{
 		putstr("Task0 creation fail\n");
 	}
 
-	taskId = Kernel_task_create(User_task1);
+	taskId = Kernel_task_create(User_task1, 2);
 	if (NOT_ENOUGH_TASK_NUM == taskId)
 	{
 		putstr("Task1 creation fail\n");
 	}
 
-	taskId = Kernel_task_create(User_task2);
+	taskId = Kernel_task_create(User_task2, 0);
 	if (NOT_ENOUGH_TASK_NUM == taskId)
 	{
 		putstr("Task2 creation fail\n");

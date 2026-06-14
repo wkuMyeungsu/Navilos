@@ -1,4 +1,3 @@
-ARCH = armv7-a
 MCPU = cortex-a8
 
 TARGET = rvpb
@@ -60,8 +59,9 @@ $(navilos): $(ASM_OBJS) $(C_OBJS) $(LINKER_SCRIPT)
 
 build/%.os: %.S
 	mkdir -p $(shell dirname $@)
-	$(CC) -march=$(ARCH) -mcpu=$(MCPU) $(INC_DIRS) $(CFLAGS) -o $@ $<
+	$(CC) -mcpu=$(MCPU) $(INC_DIRS) $(CFLAGS) -o $@ $<
+	
 
 build/%.o: %.c
 	mkdir -p $(shell dirname $@)
-	$(CC) -march=$(ARCH) -mcpu=$(MCPU) $(INC_DIRS) $(CFLAGS) -o $@ $<
+	$(CC) -mcpu=$(MCPU) $(INC_DIRS) $(CFLAGS) -o $@ $<
